@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block content %}
+<h1 class="page-title">Text Word Counter</h1>
+
+<div class="tool-card">
+  <label for="wc-text">Enter text</label>
+  <textarea id="wc-text" rows="6" placeholder="Type or paste text..."></textarea>
+
+  <div class="row">
+    <button id="analyzeBtn" class="btn">Analyze</button>
+    <button id="clearBtn" class="btn outline">Clear</button>
+  </div>
+
+  <div id="wc-results" class="wc-results">
+    <div><strong>Words:</strong> <span id="rc-words">0</span></div>
+    <div><strong>Characters:</strong> <span id="rc-chars">0</span></div>
+    <div><strong>Sentences:</strong> <span id="rc-sentences">0</span></div>
+  </div>
+
+  <!-- ADSENSE_SCRIPT -->
+  <!-- Placeholder -->
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+  const text = document.getElementById('wc-text');
+  const analyzeBtn = document.getElementById('analyzeBtn');
+  const clearBtn = document.getElementById('clearBtn');
+
+  analyzeBtn.addEventListener('click', () => {
+    const payload = new URLSearchParams();
+    payload.append('text', text.value);
+
+    fetch('{{ url_for("wordcounter") }}', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+      body: payload
+    }).then(r => r.json()).then(data => {
+      document.getElementById('rc-words').innerText = data.words;
+      document.getElementById('rc-chars').innerText = data.chars;
+      document.getElementById('rc-sentences').innerText = data.sentences;
+    }).catch(err => console.error(err));
+  });
+
+  clearBtn.addEventListener('click', () => {
+    text.value = '';
+    document.getElementById('rc-words').innerText = '0';
+    document.getElementById('rc-chars').innerText = '0';
+    document.getElementById('rc-sentences').innerText = '0';
+  });
+
+});
+</script>
+{% endblock %}
