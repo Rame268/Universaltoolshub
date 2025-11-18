@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block content %}
+<h1 class="page-title">PDF to Text Converter</h1>
+
+<div class="tool-card">
+  <form method="post" enctype="multipart/form-data">
+    <label for="pdf_file">Upload PDF (max 8MB)</label>
+    <input type="file" id="pdf_file" name="pdf_file" accept="application/pdf" required>
+    <div class="row">
+      <button type="submit" class="btn">Extract Text</button>
+    </div>
+  </form>
+
+  {% if extracted %}
+    <label for="extracted_text">Extracted text</label>
+    <form method="post" action="{{ url_for('pdf2text_download') }}">
+      <textarea id="extracted_text" name="extracted_text" rows="12">{{ extracted }}</textarea>
+      <div class="row">
+        <button type="submit" class="btn">Download as .txt</button>
+      </div>
+    </form>
+  {% else %}
+    <p class="muted">No extracted text yet. Upload a PDF to see content here.</p>
+  {% endif %}
+
+  <!-- ADSENSE_SCRIPT -->
+  <!-- Placeholder -->
+</div>
+{% endblock %}
