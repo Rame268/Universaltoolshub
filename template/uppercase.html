@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block content %}
+<h1 class="page-title">Text to Uppercase</h1>
+
+<div class="tool-card">
+  <form id="uppercase-form" method="post">
+    <label for="text">Enter text</label>
+    <textarea id="text" name="text" rows="6" placeholder="Paste or type text here...">{{ request.form.get('text','') }}</textarea>
+    <div class="row">
+      <button type="button" id="convertBtn" class="btn">Convert (client)</button>
+      <button type="submit" class="btn outline">Convert (server)</button>
+    </div>
+  </form>
+
+  <label for="result">Output</label>
+  <textarea id="result" rows="6" readonly>{{ result }}</textarea>
+
+  <!-- ADSENSE_SCRIPT -->
+  <!-- Placeholder inside tool page -->
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+  const convert = document.getElementById('convertBtn');
+  convert.addEventListener('click', () => {
+    const t = document.getElementById('text').value || '';
+    document.getElementById('result').value = t.toUpperCase();
+  });
+});
+</script>
+{% endblock %}
