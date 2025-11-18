@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block content %}
+<h1 class="page-title">Random Quote Generator</h1>
+
+<div class="tool-card">
+  <div id="quoteBox" class="quote-box">Click the button to get a quote.</div>
+  <div class="row">
+    <button id="newQuote" class="btn">New Quote</button>
+    <button id="copyQuote" class="btn outline">Copy</button>
+  </div>
+
+  <!-- ADSENSE_SCRIPT -->
+  <!-- Placeholder -->
+</div>
+
+<script>
+const quotes = {{ quotes|tojson }};
+document.addEventListener('DOMContentLoaded', () => {
+  const box = document.getElementById('quoteBox');
+  const newBtn = document.getElementById('newQuote');
+  const copyBtn = document.getElementById('copyQuote');
+
+  function showRandom() {
+    const q = quotes[Math.floor(Math.random() * quotes.length)];
+    box.innerText = q;
+  }
+
+  newBtn.addEventListener('click', showRandom);
+  copyBtn.addEventListener('click', () => {
+    navigator.clipboard?.writeText(box.innerText).then(() => {
+      copyBtn.innerText = 'Copied';
+      setTimeout(()=> copyBtn.innerText = 'Copy', 1200);
+    }).catch(()=> alert('Copy failed'));
+  });
+
+});
+</script>
+{% endblock %}
