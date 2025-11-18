@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block content %}
+<h1 class="page-title">Tools</h1>
+
+<div class="grid">
+  <a class="card" href="{{ url_for('uppercase') }}">
+    <h3>Text → UPPERCASE</h3>
+    <p>Convert any text to uppercase instantly.</p>
+  </a>
+
+  <a class="card" href="{{ url_for('wordcounter') }}">
+    <h3>Word Counter</h3>
+    <p>Words, characters and sentences analysis.</p>
+  </a>
+
+  <a class="card" href="{{ url_for('pdf2text') }}">
+    <h3>PDF → Text</h3>
+    <p>Upload a PDF and extract text. Downloadable.</p>
+  </a>
+
+  <a class="card" href="{{ url_for('habit') }}">
+    <h3>Simple Habit Tracker</h3>
+    <p>Add habits and mark them complete. Stored in session.</p>
+  </a>
+
+  <a class="card" href="{{ url_for('quotes') }}">
+    <h3>Random Quote</h3>
+    <p>Get a fresh motivational quote at the click of a button.</p>
+  </a>
+</div>
+
+<!-- ADSENSE_SCRIPT -->
+<!-- Placeholder for AdSense on homepage. -->
+
+{% endblock %}
