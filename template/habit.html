@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+{% block content %}
+<h1 class="page-title">Simple Habit Tracker</h1>
+
+<div class="tool-card">
+  <form id="habit-form" onsubmit="return false;">
+    <label for="habit-name">New habit</label>
+    <input id="habit-name" name="name" placeholder="e.g. Morning pushups">
+    <div class="row">
+      <button id="addHabitBtn" class="btn">Add Habit</button>
+    </div>
+  </form>
+
+  <div id="habitsList" class="habit-list">
+    {% for h in habits %}
+      <div class="habit-item" data-id="{{ h.id }}">
+        <label>
+          <input type="checkbox" class="habit-checkbox" {% if h.done %}checked{% endif %}>
+          <span class="habit-name">{{ h.name }}</span>
+        </label>
+        <button class="btn small delete-btn">Delete</button>
+      </div>
+    {% else %}
+      <p class="muted">No habits yet. Add one above.</p>
+    {% endfor %}
+  </div>
+
+  <!-- ADSENSE_SCRIPT -->
+  <!-- Placeholder -->
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const addBtn = document.getElementById('addHabitBtn');
+  const nameInput = document.getElementById('habit-name');
+  const list = document.getElementById('habitsList');
+
+  addBtn.addEventListener('click', async () => {
+    const name = nameInput.value.trim();
+    if (!name) return alert('Enter habit name');
+
+    const form = new URLSearchParams();
+    form.append('name', name);
+
+    const res = await fetch('{{ url_for("habit_add") }}', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+      body: form
+    });
+    const data = await res.json();
+    nameInput.value = '';
+    refreshList(data.habits);
+  });
+
+  list.addEventListener('change', async (e) => {
+    if (e.target.classList.contains('habit-checkbox')) {
+      const id = e.target.closest('.habit-item').dataset.id;
+      const res = await fetch(`/habit/toggle/${id}`, {method: 'POST'});
+      const data = await res.json();
+      refreshList(data.habits);
+    }
+  });
+
+  list.addEventListener('click', async (e) => {
+    if (e.target.classList.contains('delete-btn')) {
+      const id = e.target.closest('.habit-item').dataset.id;
+      const res = await fetch(`/habit/delete/${id}`, {method: 'POST'});
+      const data = await res.json();
+      refreshList(data.habits);
+    }
+  });
+
+  function refreshList(habits) {
+    list.innerHTML = '';
+    if (!habits || habits.length === 0) {
+      list.innerHTML = '<p class="muted">No habits yet. Add one above.</p>';
+      return;
+    }
+    for (const h of habits) {
+      const div = document.createElement('div');
+      div.className = 'habit-item';
+      div.dataset.id = h.id;
+      div.innerHTML = `
+        <label>
+          <input type="checkbox" class="habit-checkbox" ${h.done ? 'checked' : ''}>
+          <span class="habit-name">${escapeHtml(h.name)}</span>
+        </label>
+        <button class="btn small delete-btn">Delete</button>
+      `;
+      list.appendChild(div);
+    }
+  }
+
+  function escapeHtml(s) {
+    return s.replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;');
+  }
+});
+</script>
+{% endblock %}
