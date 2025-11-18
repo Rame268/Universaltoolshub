@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Universal Tools Hub</title>
+
+  <!-- Google Fonts: Poppins (browser will request this externally) -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <script defer src="{{ url_for('static', filename='script.js') }}"></script>
+
+  <!-- ADSENSE_SCRIPT -->
+  <!-- Placeholder for Google AdSense script. Paste your AdSense script here in production. -->
+</head>
+<body>
+  <nav class="nav">
+    <div class="container nav-inner">
+      <a href="{{ url_for('index') }}" class="brand">Universal Tools Hub</a>
+      <div class="nav-links">
+        <a href="{{ url_for('index') }}">Home</a>
+        <a href="{{ url_for('uppercase') }}">Uppercase</a>
+        <a href="{{ url_for('wordcounter') }}">Word Counter</a>
+        <a href="{{ url_for('pdf2text') }}">PDF→Text</a>
+        <a href="{{ url_for('habit') }}">Habit Tracker</a>
+        <a href="{{ url_for('quotes') }}">Quotes</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container main">
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div>© {{ (2025) }} Universal Tools Hub — Built with Flask</div>
+      <div class="footer-links">
+        <a href="javascript:void(0)">Privacy</a>
+        <a href="javascript:void(0)">Terms</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
